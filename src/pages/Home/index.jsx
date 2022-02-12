@@ -5,7 +5,7 @@ import axios from "axios";
 import MiniChart, {
   STATUS_RISE,
   STATUS_DESCENT,
-} from "../../components/Minichart";
+} from "../../components/MiniChart";
 import { Link } from "react-router-dom";
 import convertPrice from "../../helper/convertPrice";
 
@@ -25,7 +25,6 @@ export default function Home() {
       .then((response) => {
         setLoading(false);
         setError({ state: false, message: "" });
-        console.log(response.data.data);
         setCoins(response.data.data.coins);
         setCoinsData(response.data.data.stats);
       })
@@ -99,7 +98,11 @@ function CoinsList({ list }) {
                 <div className="coinChart">
                   <span
                     className={`coinChange ${
-                      item.change > 0 ? "rise" : "descent"
+                      item.change > 0
+                        ? "rise"
+                        : item.change < 0
+                        ? "descent"
+                        : ""
                     }`}
                   >
                     {item.change}%

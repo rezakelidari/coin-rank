@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import convertPrice from "../../helper/convertPrice";
-
 import "./Home.scss";
+
+import axios from "axios";
 import MiniChart, {
   STATUS_RISE,
   STATUS_DESCENT,
 } from "../../components/Minichart";
+import { Link } from "react-router-dom";
+import convertPrice from "../../helper/convertPrice";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -80,34 +81,36 @@ function CoinsList({ list }) {
       <ul className="coinsList">
         {list.map((item) => {
           return (
-            <li key={item.name} className="coin">
-              <div className="title">
-                <img src={item.iconUrl} alt="Icon" className="coinIcon" />
+            <Link to={`/coin/${item.uuid}`}>
+              <li key={item.name} className="coin">
+                <div className="title">
+                  <img src={item.iconUrl} alt="Icon" className="coinIcon" />
 
-                <h3 className="coinTitle">
-                  <div className="coinName">{item.name}</div>
-                  <span className="coinSymbol">{item.symbol}</span>
-                </h3>
-              </div>
+                  <h3 className="coinTitle">
+                    <div className="coinName">{item.name}</div>
+                    <span className="coinSymbol">{item.symbol}</span>
+                  </h3>
+                </div>
 
-              <div className="coinPrice">${convertPrice(item.price)}</div>
+                <div className="coinPrice">${convertPrice(item.price)}</div>
 
-              <div className="coinMC">${convertPrice(item.marketCap)}</div>
+                <div className="coinMC">${convertPrice(item.marketCap)}</div>
 
-              <div className="coinChart">
-                <span
-                  className={`coinChange ${
-                    item.change > 0 ? "rise" : "descent"
-                  }`}
-                >
-                  {item.change}%
-                </span>
-                <MiniChart
-                  data={item.sparkline}
-                  status={item.change > 0 ? STATUS_RISE : STATUS_DESCENT}
-                />
-              </div>
-            </li>
+                <div className="coinChart">
+                  <span
+                    className={`coinChange ${
+                      item.change > 0 ? "rise" : "descent"
+                    }`}
+                  >
+                    {item.change}%
+                  </span>
+                  <MiniChart
+                    data={item.sparkline}
+                    status={item.change > 0 ? STATUS_RISE : STATUS_DESCENT}
+                  />
+                </div>
+              </li>
+            </Link>
           );
         })}
       </ul>
